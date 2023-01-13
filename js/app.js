@@ -396,6 +396,37 @@
                 document.documentElement.classList.add(className);
             }));
         }
+        let isMobile = {
+            Android: function() {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function() {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function() {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function() {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function() {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function() {
+                return isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows();
+            }
+        };
+        function fullVHfix() {
+            const fullScreens = document.querySelectorAll("[data-fullscreen]");
+            if (fullScreens.length && isMobile.any()) {
+                window.addEventListener("resize", fixHeight);
+                function fixHeight() {
+                    let vh = .01 * window.innerHeight;
+                    document.documentElement.style.setProperty("--vh", `${vh}px`);
+                }
+                fixHeight();
+            }
+        }
         let _slideUp = (target, duration = 500, showmore = 0) => {
             if (!target.classList.contains("_slide")) {
                 target.classList.add("_slide");
@@ -2458,9 +2489,26 @@ PERFORMANCE OF THIS SOFTWARE.
         }
         const da = new DynamicAdapt("max");
         da.init();
+        const sidebar = document.querySelector(".sidebar-menu");
+        let clientWidth;
+        document.addEventListener("click", (function(e) {
+            if (sidebar) {
+                if (!e.target.closest(".sidebar-menu") && !e.target.closest(".icon-menu")) document.documentElement.classList.remove("menu-open");
+                if (e.target.closest(".icon-menu")) {
+                    clientWidth = document.body.clientWidth;
+                    if (clientWidth >= 768) scrollWithSidebar();
+                }
+            }
+        }));
+        function scrollWithSidebar() {
+            setTimeout((() => {
+                document.documentElement.classList.remove("lock");
+            }), 200);
+        }
         window["FLS"] = false;
         isWebp();
         menuInit();
+        fullVHfix();
         spollers();
     })();
 })();
