@@ -672,6 +672,32 @@
             use_native: true
         });
         let addWindowScrollEvent = false;
+        function headerScroll() {
+            addWindowScrollEvent = true;
+            const header = document.querySelector("header.header");
+            const headerShow = header.hasAttribute("data-scroll-show");
+            const headerShowTimer = header.dataset.scrollShow ? header.dataset.scrollShow : 500;
+            const startPoint = header.dataset.scroll ? header.dataset.scroll : 1;
+            let scrollDirection = 0;
+            let timer;
+            document.addEventListener("windowScroll", (function(e) {
+                const scrollTop = window.scrollY;
+                clearTimeout(timer);
+                if (scrollTop >= startPoint) {
+                    !header.classList.contains("_header-scroll") ? header.classList.add("_header-scroll") : null;
+                    if (headerShow) {
+                        if (scrollTop > scrollDirection) header.classList.contains("_header-show") ? header.classList.remove("_header-show") : null; else !header.classList.contains("_header-show") ? header.classList.add("_header-show") : null;
+                        timer = setTimeout((() => {
+                            !header.classList.contains("_header-show") ? header.classList.add("_header-show") : null;
+                        }), headerShowTimer);
+                    }
+                } else {
+                    header.classList.contains("_header-scroll") ? header.classList.remove("_header-scroll") : null;
+                    if (headerShow) header.classList.contains("_header-show") ? header.classList.remove("_header-show") : null;
+                }
+                scrollDirection = scrollTop <= 0 ? 0 : scrollTop;
+            }));
+        }
         setTimeout((() => {
             if (addWindowScrollEvent) {
                 let windowScroll = new Event("windowScroll");
@@ -2505,10 +2531,48 @@ PERFORMANCE OF THIS SOFTWARE.
                 document.documentElement.classList.remove("lock");
             }), 200);
         }
+        const filterItems = document.querySelectorAll(".filter__item");
+        document.addEventListener("click", (function(e) {
+            if (filterItems.length > 0) if (e.target.closest(".filter__item")) {
+                filterItems.forEach((filterItem => {
+                    filterItem.classList.remove("active");
+                }));
+                e.target.classList.add("active");
+            }
+        }));
+        const header = document.querySelector(".header");
+        const headerHeight = header.offsetHeight;
+        const nextBlock = document.querySelector(".services");
+        const coorNextBlockTopViewport = nextBlock.getBoundingClientRect().top;
+        const coorNextBlockTopDocument = coorNextBlockTopViewport + window.scrollY;
+        const scrollButton = document.querySelector(".main-block__scroll");
+        if (scrollButton) document.addEventListener("click", (function(e) {
+            let targetElement = e.target;
+            if (targetElement.closest(".main-block__scroll")) scrollToNextBlock();
+        }));
+        function scrollToNextBlock() {
+            window.scrollTo({
+                top: coorNextBlockTopDocument - headerHeight,
+                left: 0,
+                behavior: "smooth"
+            });
+        }
+        let map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: {
+                    lat: -34.397,
+                    lng: 150.644
+                },
+                zoom: 8
+            });
+        }
+        window.initMap = initMap;
         window["FLS"] = false;
         isWebp();
         menuInit();
         fullVHfix();
         spollers();
+        headerScroll();
     })();
 })();
