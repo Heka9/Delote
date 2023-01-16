@@ -3459,9 +3459,9 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
     background-color: #CDAA7D;
   }
 
-  .icon-menu:hover span .touch,
-  .icon-menu:hover::before .touch,
-  .icon-menu:hover::after .touch {
+  .touch .icon-menu:hover span,
+  .touch .icon-menu:hover::before,
+  .touch .icon-menu:hover::after {
     background-color: #fff;
   }
 
