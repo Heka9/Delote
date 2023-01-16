@@ -73,12 +73,17 @@ h6 {
 
 body {
   background-color: #111111;
-  scrollbar-width: 0;
   position: relative;
 }
 
 body::-webkit-scrollbar {
-  width: 0;
+  width: none;
+}
+
+@supports (scrollbar-width: none) {
+  body {
+    scrollbar-width: none;
+  }
 }
 
 .lock body {
