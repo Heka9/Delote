@@ -77,7 +77,7 @@ body {
 }
 
 body::-webkit-scrollbar {
-  width: none;
+  width: 0;
 }
 
 @supports (scrollbar-width: none) {
