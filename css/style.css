@@ -71,19 +71,19 @@ h6 {
   font-size: inherit;
 }
 
-body {
-  background-color: #111111;
-  position: relative;
-}
-
-body::-webkit-scrollbar {
+html::-webkit-scrollbar {
   width: 0;
 }
 
 @supports (scrollbar-width: none) {
-  body {
+  html {
     scrollbar-width: none;
   }
+}
+
+body {
+  background-color: #111111;
+  position: relative;
 }
 
 .lock body {
