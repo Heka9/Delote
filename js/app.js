@@ -416,16 +416,8 @@
                 return isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows();
             }
         };
-        function fullVHfix() {
-            const fullScreens = document.querySelectorAll("[data-fullscreen]");
-            if (fullScreens.length && isMobile.any()) {
-                window.addEventListener("resize", fixHeight);
-                function fixHeight() {
-                    let vh = .01 * window.innerHeight;
-                    document.documentElement.style.setProperty("--vh", `${vh}px`);
-                }
-                fixHeight();
-            }
+        function addTouchClass() {
+            if (isMobile.any()) document.documentElement.classList.add("touch");
         }
         let _slideUp = (target, duration = 500, showmore = 0) => {
             if (!target.classList.contains("_slide")) {
@@ -2746,8 +2738,8 @@ PERFORMANCE OF THIS SOFTWARE.
         window.initMap = initMap;
         window["FLS"] = false;
         isWebp();
+        addTouchClass();
         menuInit();
-        fullVHfix();
         spollers();
         headerScroll();
     })();

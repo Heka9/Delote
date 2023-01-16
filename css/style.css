@@ -165,6 +165,7 @@ body {
   position: fixed;
   width: 100%;
   z-index: 50;
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.5);
 }
 
 .header::before {
@@ -191,11 +192,11 @@ body {
   -webkit-transition: top 0.3s ease 0s;
   -o-transition: top 0.3s ease 0s;
   transition: top 0.3s ease 0s;
+  z-index: -1;
 }
 
 .header._header-scroll::after {
   top: 0;
-  z-index: -1;
 }
 
 .header__container {
@@ -211,15 +212,25 @@ body {
           align-items: center;
 }
 
+.header__left-side {
+  position: relative;
+  z-index: 10;
+}
+
 .header__logo {
   position: relative;
-  z-index: 3;
+  z-index: 10;
 }
 
 .header__logo path {
   -webkit-transition: fill 0.3s ease 0s;
   -o-transition: fill 0.3s ease 0s;
   transition: fill 0.3s ease 0s;
+}
+
+.header__right-side {
+  position: relative;
+  z-index: 10;
 }
 
 .left-side-header {
@@ -241,7 +252,7 @@ body {
           flex: 0 0 1.625rem;
   width: 1.625rem;
   position: relative;
-  z-index: 3;
+  z-index: 10;
 }
 
 .left-side-header__icon path {
@@ -251,19 +262,23 @@ body {
 }
 
 .menu__sidebar {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   -webkit-transition: right 0.3s linear 0s;
   -o-transition: right 0.3s linear 0s;
   transition: right 0.3s linear 0s;
   overflow: auto;
+}
+
+.menu__sidebar::before {
+  content: "";
+  position: fixed;
+  z-index: 1;
+  height: 6.25rem;
+  top: 0;
+  right: -100%;
+  background-color: #111111;
+  -webkit-transition: right 0.3s linear 0s;
+  -o-transition: right 0.3s linear 0s;
+  transition: right 0.3s linear 0s;
 }
 
 .menu-open .menu__sidebar {
@@ -365,7 +380,7 @@ body {
   -webkit-box-flex: 0;
       -ms-flex: 0 0 3.125rem;
           flex: 0 0 3.125rem;
-  z-index: 5;
+  z-index: 10;
 }
 
 .icon-menu span,
@@ -466,6 +481,7 @@ body {
 }
 
 .contacts-footer__title {
+  cursor: default;
   font-family: "EB Garamond";
   font-weight: 700;
   font-size: 1.5rem;
@@ -489,6 +505,7 @@ body {
 }
 
 .work-time-footer__title {
+  cursor: default;
   font-family: "EB Garamond";
   font-weight: 700;
   font-size: 1.5rem;
@@ -1721,15 +1738,14 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
     position: fixed;
     right: -100%;
     top: 0;
-    height: 100%;
-    z-index: 5;
+    height: 100vh;
+    z-index: 1;
     background-color: #111111;
-    padding-top: 7.5rem;
     padding-bottom: 1.25rem;
   }
 
   .sidebar-menu__content {
-    padding-top: 6.25rem;
+    padding-top: 7.5rem;
   }
 
   .block-prices:nth-child(even) .block-prices__image {
@@ -1990,6 +2006,14 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
     width: 24.74%;
   }
 
+  .menu__sidebar::before {
+    width: 24.74%;
+  }
+
+  .menu-open .menu__sidebar::before {
+    right: 0;
+  }
+
   .sidebar-menu__text:not(:last-child) {
     margin-bottom: 5rem;
   }
@@ -2203,11 +2227,27 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
   .menu__sidebar {
     width: 29.6875rem;
   }
+
+  .menu__sidebar::before {
+    width: 29.6875rem;
+  }
+
+  .menu-open .menu__sidebar::before {
+    right: 0;
+  }
 }
 
 @media (max-width: 82.875em) {
   .menu__sidebar {
     width: 25rem;
+  }
+
+  .menu__sidebar::before {
+    width: 25rem;
+  }
+
+  .menu-open .menu__sidebar::before {
+    right: 0;
   }
 
   .services__items {
@@ -2235,10 +2275,18 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
   }
 
   .menu__sidebar {
-    padding-top: 6.25rem;
     width: 18.75rem;
     margin: 0 auto;
     text-align: center;
+  }
+
+  .menu__sidebar::before {
+    height: 5rem;
+    width: 18.75rem;
+  }
+
+  .menu-open .menu__sidebar::before {
+    right: 0;
   }
 
   .services__quote {
@@ -2316,8 +2364,8 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
     left: 0;
   }
 
-  .menu__sidebar {
-    padding-top: 1.875rem;
+  .menu__sidebar::before {
+    display: none;
   }
 
   .menu__list {
@@ -3429,6 +3477,12 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item:not(.lg-zoomable).lg-co
   .icon-menu:hover::before,
   .icon-menu:hover::after {
     background-color: #CDAA7D;
+  }
+
+  .touch .icon-menu:hover span,
+  .touch .icon-menu:hover::before,
+  .touch .icon-menu:hover::after {
+    background-color: #fff;
   }
 
   .footer__logo:hover path {
